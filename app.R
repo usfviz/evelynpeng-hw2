@@ -3,7 +3,7 @@ library(ggplot2)
 
 rm(list=ls())
 cat("\014")
-#setwd('/Users/evelyn/Documents/2017Spring/MSAN622/assignment2')
+setwd('/Users/evelyn/Documents/2017Spring/MSAN622/assignment2')
 
 life <- read.csv('life.csv', header=T)
 life <- life[-c(109), ]
@@ -18,14 +18,8 @@ if (interactive()) {
   options(device.ask.default = FALSE)
   
   ui <- fluidPage(
-    plotOutput("distPlot", click = "plot_click", hover = "plot_hover", height = "900px"),
-    
-    sliderInput("year", "Year of dataset:",
-                min = 1960, max = 2014, value = 1, animate = TRUE,
-                width = '90%'
-    ),
     uiOutput("hover_info"),
-    selectInput("variable", "Variable:",
+    selectInput("variable", "Select Region:",
                 c('All Region' = 'All',
                   "Latin America & Caribbean" = "Latin America & Caribbean",
                   "South Asia" = "South Asia",
@@ -33,7 +27,14 @@ if (interactive()) {
                   "Europe & Central Asia" = "Europe & Central Asia",
                   "Middle East & North Africa" = "Middle East & North Africa",
                   "East Asia & Pacific" = "East Asia & Pacific",
-                  'North America' = "North America"), selected = NULL)
+                  'North America' = "North America"), selected = NULL), 
+    plotOutput("distPlot", click = "plot_click", hover = "plot_hover", height = "400px"),
+    
+    sliderInput("year", "Year of dataset:",
+                min = 1960, max = 2014, value = 1, animate = TRUE,
+                width = '90%'
+    )
+
   )
   # Server logic
   server <- function(input, output) {
@@ -50,11 +51,11 @@ if (interactive()) {
       df <- na.omit(df)
       
       if (input$variable == "All"){
-        ggplot(df, aes(x=life, y=fertility, fill = factor(region), size = population)) + geom_point(pch=21) + scale_size(range = c(2, 40)) + xlim(10, 90) + ylim(1,9) + guides(size=FALSE)+ theme(text = element_text(size=20))
+        ggplot(df, aes(x=life, y=fertility, fill = factor(region), size = population)) + geom_point(pch=21) + scale_size(range = c(2, 40)) + xlim(10, 90) + ylim(1,9) + guides(size=FALSE)+ theme(text = element_text(size=20)) + xlab("Life expectancy") + ylab("Fertility Rate") + ggtitle("Life expectancy vs Fertility Rate 1960-2014") + labs(aesthetic='Region')
       }
       else{
         d_bg <- df[df$region == input$variable, ]
-        ggplot(df, aes(x=life, y=fertility, color = factor(region), size = population, alpha = 0.4)) + geom_point() + geom_jitter(data = d_bg, aes(alpha=1)) + scale_size(range = c(2, 40)) + xlim(10, 90) + ylim(1,9) + guides(size=FALSE, alpha = FALSE) + theme(text = element_text(size=20))
+        ggplot(df, aes(x=life, y=fertility, color = factor(region), size = population, alpha = 0.4)) + geom_point() + geom_jitter(data = d_bg, aes(alpha=1)) + scale_size(range = c(2, 40)) + xlim(10, 90) + ylim(1,9) + guides(size=FALSE, alpha = FALSE) + theme(text = element_text(size=20)) + xlab("Life expectancy") + ylab("Fertility Rate") + ggtitle("Life expectancy vs Fertility Rate 1960-2014") + labs(aesthetic='Region')  
       }
 })
     output$hover_info <- renderUI({

@@ -3,7 +3,7 @@ library(ggplot2)
 
 rm(list=ls())
 cat("\014")
-setwd('/Users/evelyn/Documents/2017Spring/MSAN622/assignment2')
+#setwd('/Users/evelyn/Documents/2017Spring/MSAN622/assignment2')
 
 life <- read.csv('life.csv', header=T)
 life <- life[-c(109), ]

@@ -3,7 +3,7 @@ library(ggplot2)
 
 rm(list=ls())
 cat("\014")
-setwd('/Users/evelyn/Documents/2017Spring/MSAN622/assignment2')
+#setwd('/Users/evelyn/Documents/2017Spring/MSAN622/assignment2')
 
 life <- read.csv('life.csv', header=T)
 life <- life[-c(109), ]
@@ -51,11 +51,11 @@ if (interactive()) {
       df <- na.omit(df)
       
       if (input$variable == "All"){
-        ggplot(df, aes(x=life, y=fertility, fill = factor(region), size = population)) + geom_point(pch=21) + scale_size(range = c(2, 40)) + xlim(10, 90) + ylim(1,9) + guides(size=FALSE)+ theme(text = element_text(size=20)) + xlab("Life expectancy") + ylab("Fertility Rate") + ggtitle("Life expectancy vs Fertility Rate 1960-2014") + labs(aesthetic='Region')
+        ggplot(df, aes(x=life, y=fertility, fill = factor(region), size = population)) + geom_point(pch=21) + scale_size(range = c(2, 40)) + guides(size=FALSE)+ theme(text = element_text(size=20)) + xlab("Life expectancy") + ylab("Fertility Rate") + ggtitle("Life expectancy vs Fertility Rate 1960-2014") + labs(fill='Region') 
       }
       else{
         d_bg <- df[df$region == input$variable, ]
-        ggplot(df, aes(x=life, y=fertility, color = factor(region), size = population, alpha = 0.4)) + geom_point() + geom_jitter(data = d_bg, aes(alpha=1)) + scale_size(range = c(2, 40)) + xlim(10, 90) + ylim(1,9) + guides(size=FALSE, alpha = FALSE) + theme(text = element_text(size=20)) + xlab("Life expectancy") + ylab("Fertility Rate") + ggtitle("Life expectancy vs Fertility Rate 1960-2014") + labs(aesthetic='Region')  
+        ggplot(df, aes(x=life, y=fertility, color = factor(region), size = population, alpha = 0.4)) + geom_point() + geom_jitter(data = d_bg, aes(alpha=0.6)) + scale_size(range = c(2, 40)) + guides(size=FALSE, alpha = FALSE) + theme(text = element_text(size=20)) + xlab("Life expectancy") + ylab("Fertility Rate") + ggtitle("Life expectancy vs Fertility Rate 1960-2014") + labs(color='Region')  
       }
 })
     output$hover_info <- renderUI({
@@ -80,7 +80,7 @@ if (interactive()) {
       # actual tooltip created as wellPanel
       wellPanel(
         style = style,
-        p(HTML(paste0("<b> Country: </b>", rownames(point), "<br/>")))
+        p(HTML(paste0("<b> Country: </b>", rownames(point), "<br/>", "Population: </b>", point[,c('population')], "<br/>")))
       )
     })
   }

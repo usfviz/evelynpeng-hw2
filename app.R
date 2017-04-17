@@ -3,7 +3,7 @@ library(ggplot2)
 
 rm(list=ls())
 cat("\014")
-#setwd('/Users/evelyn/Documents/2017Spring/MSAN622/assignment2')
+setwd('/Users/evelyn/Documents/2017Spring/MSAN622/assignment2')
 
 life <- read.csv('life.csv', header=T)
 life <- life[-c(109), ]
@@ -80,7 +80,7 @@ if (interactive()) {
       # actual tooltip created as wellPanel
       wellPanel(
         style = style,
-        p(HTML(paste0("<b> Country: </b>", rownames(point), "<br/>", "Population: </b>", point[,c('population')], "<br/>")))
+        p(HTML(paste0("<b> Country: </b>", rownames(point), "<br/>", "Population: </b>", point[,c('population')], "<br/>", "Fertility Rate: </b>", point[,c('fertility')], "<br/>")))
       )
     })
   }
